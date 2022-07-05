@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_class_a/provider/theme_provider.dart';
+import 'package:flutter_class_a/ui_helper/main_wrapper.dart';
 import 'package:flutter_class_a/ui_helper/theme_swicher.dart';
 import 'package:provider/provider.dart';
 
@@ -40,15 +41,7 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           home: Directionality(
             textDirection: TextDirection.ltr,
-            child: Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                actions: const [
-                  ThemeSwicher(),
-                ],
-                title: const Text('Exchange crypto'),
-              ),
-            ),
+            child: MainWrapper(),
           ),
         );
       },
