@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_class_a/ui_helper/theme_swicher.dart';
 import 'package:marquee/marquee.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../ui_helper/home_page_view.dart';
 
-class HomePage extends StatelessWidget {
-  PageController pageController = PageController(initialPage: 0);
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final PageController pageController = PageController(initialPage: 0);
+
+  int defaultChoicesIndex = 0;
+
+  final List<String> _choicesList = [
+    'Top MarketCaps',
+    'Top Gainers',
+    'Top Losser'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +79,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
+              // *marque text
               SizedBox(
                 width: double.infinity,
                 height: 30,
@@ -76,24 +88,74 @@ class HomePage extends StatelessWidget {
                   style: textTheme.bodySmall,
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Buy'),
+              SizedBox(height: 5),
+              //  * sell & buy btn
+              Padding(
+                padding: EdgeInsets.only(left: 5.0, right: 5),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green.shade700,
+                          padding: EdgeInsets.all(20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Text('Buy'),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Buy'),
+                    SizedBox(
+                      width: 10,
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red.shade700,
+                          padding: EdgeInsets.all(20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Text('Sell'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              // *choices chips
+              Padding(
+                padding: EdgeInsets.only(right: 5, left: 5),
+                child: Row(
+                  children: [
+                    Wrap(
+                      spacing: 5,
+                      children: List.generate(_choicesList.length, (index) {
+                        return ChoiceChip(
+                          label: Text(
+                            _choicesList[index],
+                            style: textTheme.titleSmall,
+                          ),
+                          selected: defaultChoicesIndex == index,
+                          selectedColor: Colors.blue,
+                          onSelected: (isSelected) {
+                            setState(
+                              () {
+                                isSelected
+                                    ? defaultChoicesIndex = index
+                                    : defaultChoicesIndex;
+                              },
+                            );
+                          },
+                        );
+                      }),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
