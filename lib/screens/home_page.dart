@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_class_a/network/response_model.dart';
+import 'package:flutter_class_a/provider/crypto_data_provider.dart';
 import 'package:flutter_class_a/ui_helper/theme_swicher.dart';
 import 'package:marquee/marquee.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../ui_helper/home_page_view.dart';
@@ -20,6 +23,15 @@ class _HomePageState extends State<HomePage> {
     'Top Gainers',
     'Top Losser'
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final cryptoPriver =
+        Provider.of<CryptoDataProvider>(context, listen: false);
+    cryptoPriver.getTopMarketCapData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +169,20 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+              Consumer<CryptoDataProvider>(
+                builder: (context, cryptoDataProvider, child) {
+                  switch (cryptoDataProvider.state.status) {
+                    case Status.LOADING:
+                      return Text(cryptoDataProvider.state.message);
+                    case Status.COMPLETED:
+                      return Text('done');
+                    case Status.ERROR:
+                      return Text(cryptoDataProvider.state.message);
+                    default:
+                      return Container();
+                  }
+                },
+              )
             ],
           ),
         ),
