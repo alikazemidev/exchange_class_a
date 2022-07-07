@@ -4,6 +4,7 @@ import 'package:flutter_class_a/provider/crypto_data_provider.dart';
 import 'package:flutter_class_a/ui_helper/theme_swicher.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../ui_helper/home_page_view.dart';
@@ -169,19 +170,140 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Consumer<CryptoDataProvider>(
-                builder: (context, cryptoDataProvider, child) {
-                  switch (cryptoDataProvider.state.status) {
-                    case Status.LOADING:
-                      return Text(cryptoDataProvider.state.message);
-                    case Status.COMPLETED:
-                      return Text('done');
-                    case Status.ERROR:
-                      return Text(cryptoDataProvider.state.message);
-                    default:
-                      return Container();
-                  }
-                },
+              SizedBox(
+                height: 500,
+                child: Consumer<CryptoDataProvider>(
+                  builder: (context, cryptoDataProvider, child) {
+                    switch (cryptoDataProvider.state.status) {
+                      case Status.LOADING:
+                        return SizedBox(
+                          height: 80,
+                          child: Shimmer.fromColors(
+                            child: Row(children: []),
+                            baseColor: Colors.grey.shade600,
+                            highlightColor: Colors.white,
+                          ),
+                        );
+                      case Status.COMPLETED:
+                        return SizedBox(
+                          height: 80,
+                          child: Shimmer.fromColors(
+                            child: ListView.builder(
+                              itemCount: 10,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  children: [
+                                    // *first item in shimmer
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 8.0,
+                                        right: 8,
+                                        bottom: 8,
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        backgroundColor: Colors.white,
+                                        child: Icon(Icons.add),
+                                      ),
+                                    ),
+                                    // *second item in shimmer
+                                    Flexible(
+                                      fit: FlexFit.tight,
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.only(right: 8, left: 8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 15,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 8,
+                                              ),
+                                              height: 15,
+                                              width: 25,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    // *third item in shimmer
+                                    Flexible(
+                                      fit: FlexFit.tight,
+                                      child: Container(
+                                        width: 70,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                      ),
+                                    ),
+                                    // *fourth item in shimmer
+                                    Flexible(
+                                      fit: FlexFit.tight,
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.only(right: 8, left: 8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              height: 15,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 8,
+                                              ),
+                                              height: 15,
+                                              width: 25,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                            baseColor: Colors.grey.shade400,
+                            highlightColor: Colors.white,
+                          ),
+                        );
+                      case Status.ERROR:
+                        return Text(cryptoDataProvider.state.message);
+                      default:
+                        return Container();
+                    }
+                  },
+                ),
               )
             ],
           ),
