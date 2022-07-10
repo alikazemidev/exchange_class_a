@@ -34,13 +34,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    final cryptoPriver =
+    final cryptoPrivder =
         Provider.of<CryptoDataProvider>(context, listen: false);
-    cryptoPriver.getTopMarketCapData();
+    cryptoPrivder.getTopMarketCapData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final cryptoProvider = Provider.of<CryptoDataProvider>(context);
     var height = MediaQuery.of(context).size.height;
     var primaryColor = Theme.of(context).primaryColor;
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -167,6 +168,18 @@ class _HomePageState extends State<HomePage> {
                                 isSelected
                                     ? defaultChoicesIndex = index
                                     : defaultChoicesIndex;
+
+                                switch (index) {
+                                  case 0:
+                                    cryptoProvider.getTopMarketCapData();
+                                    break;
+                                  case 1:
+                                    cryptoProvider.getTopGainersData();
+                                    break;
+                                  case 2:
+                                    cryptoProvider.getTopLosersData();
+                                    break;
+                                }
                               },
                             );
                           },
@@ -372,6 +385,7 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   ),
+                                  //  * coin of chart
                                   Flexible(
                                     fit: FlexFit.tight,
                                     //  "http://s2.coinmarketcap.com/generated/sparklines/web/7d/2781/$tokenId.svg",
@@ -385,6 +399,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
+                                  //  *price perecent change
                                   Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.only(
@@ -413,7 +428,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ),
                                             ],
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ),
